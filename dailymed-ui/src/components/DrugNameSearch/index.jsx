@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import Form from 'react-bootstrap/Form'
+import DrugStrengthSearch from '../DrugStrengthSearch';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,7 +17,9 @@ export default class DrugNameSearch extends React.Component {
             highlightOnlyResult: true,
             paginate: true,
             maxResults: 7,
-            clearButton: true
+            clearButton: true,
+            labelKey: 'displayName',
+            selected: [],
         };
 
         this.setSingleSelections = this.setSingleSelections.bind(this);
@@ -52,32 +55,36 @@ export default class DrugNameSearch extends React.Component {
                 }
                 this.setState({ options });
             });
-        };
+        }
     }
 
     setSingleSelections(selected) {
         console.log(selected);
+        this.setState({ selected: selected.length > 0 ? selected[0] : [] });
     }
  
     render() {
-        const { options, minLength, highlightOnlyResult, paginate, maxResults, clearButton } = this.state;      
+        const { options, minLength, highlightOnlyResult, paginate, maxResults, clearButton, labelKey, selected } = this.state;      
         return (
             <div>
                 <Form.Group>
                     <Typeahead
-                        id="basic-typeahead-single"
+                        id="drug-name-typeahead"
                         minLength={minLength}
                         highlightOnlyResult={highlightOnlyResult}
                         paginate={paginate}
                         maxResults={maxResults}
                         clearButton={clearButton}
-                        labelKey="displayName"
+                        labelKey={labelKey}
                         onInputChange={(text) => this.handleInputChange(text)}
                         onChange={(selected) => this.setSingleSelections(selected)}
                         options={options}
-                        placeholder="Choose a medication..."
+                        placeholder="Enter drug name..."
                     />
                 </Form.Group>
+
+                <h1>{selected.displayName}</h1>
+                <DrugStrengthSearch selected={selected} />
             </div>      
         );
     }
