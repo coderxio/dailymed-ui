@@ -1,18 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
 
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import DrugNameSearch from './components/DrugNameSearch'
+import RxTermsSearch from './components/RxTermsSearch';
 
 function App() {
   return (
     <Container>
       <Row>
-        <Col>
-          <DrugNameSearch />
+        <Col md={4}>
+          <RxTermsSearch />
         </Col>
       </Row>
     </Container>
