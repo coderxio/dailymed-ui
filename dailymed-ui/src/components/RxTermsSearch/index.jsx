@@ -11,7 +11,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 export default class RxTermsSearch extends React.Component {
     constructor(props) {
         super(props);
-        /** State object for the typeahead */
+        // State object for the typeahead 
         this.state = {
           settings: {
             drugNameMinLength: 3,
@@ -72,18 +72,17 @@ export default class RxTermsSearch extends React.Component {
                 highlightOnlyResult={settings.highlightOnlyResult}
                 paginate={settings.paginate}
                 maxResults={settings.maxResults}
-                /**Object property that will be used for the dropdown item */
-                labelKey={"displayName"}
-                /**Function that runs on a selected dropdown option*/
+                //Object property that will be used for the dropdown item                 labelKey={"displayName"}
+                //Function that runs on a selected dropdown option
                 onChange={(selection) => this.setDrugName(selection)}
-                /**The dropdown options available for selection*/
+                //The dropdown options available for selection
                 options={options.drugName}
-                /**Text shown in the dropdown box when a search is being fetched*/
+                //Text shown in the dropdown box when a search is being fetched
                 searchText="Searching..."
                 placeholder="Enter a drug name..."
-                /**Whether the dropdown should show the loading icon*/
+                //Whether the dropdown should show the loading icon
                 isLoading={this.state.isLoading}
-                /**Runs when any text is being typed into the typeahead*/
+                //Runs when any text is being typed into the typeahead
                 onSearch={(text) => {
                   this.setState({ isLoading: true });
                   this.searchForTerms(text, settings, options);
