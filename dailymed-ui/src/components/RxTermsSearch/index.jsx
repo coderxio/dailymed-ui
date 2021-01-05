@@ -61,13 +61,14 @@ export default class RxTermsSearch extends React.Component {
 
 
     render() {
-        const { settings, options, selected } = this.state;      
+        const { settings, options, selected } = this.state;
         return (
           <div>
             <Form.Group>
               <Form.Label>Drug name</Form.Label>
               <AsyncTypeahead
                 id="drug-name-typeahead"
+                labelKey={"displayName"}
                 minLength={settings.drugNameMinLength}
                 highlightOnlyResult={settings.highlightOnlyResult}
                 paginate={settings.paginate}
@@ -107,7 +108,7 @@ export default class RxTermsSearch extends React.Component {
                 }
                 onChange={(selection) => this.setDrugStrengthAndForm(selection)}
                 options={options.drugStrengthAndForm}
-                placeholder="Choose a strength and form"
+                placeholder="Choose a strength and form..."
               />
             </Form.Group>
 
@@ -131,19 +132,25 @@ export default class RxTermsSearch extends React.Component {
             fetch(
                 `https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search?ef=DISPLAY_NAME,STRENGTHS_AND_FORMS,RXCUIS&maxList=&terms=${text}`
             )
-                .then((resp) => resp.json())
-                .then((json) => {
-                    //** Deconstruct the fetch result */
-                    const { DISPLAY_NAME: names, STRENGTHS_AND_FORMS: forms, RXCUIS: cuis } = json[2];
-                    //**If names are returned, set the dropdown options to the returned names */
-                    if (names && forms)
-                        options.drugName = names.map((name, index) => {
-                            return {
-                                displayName: name,
-                                strengthsAndForms: forms[index]
-                            };
-                        });
-                    this.setState({ isLoading: false, options, selected: [] });
-                });
+            .then((resp) => resp.json())
+            .then((json) => {
+                //** Deconstruct the fetch result */
+                const { DISPLAY_NAME: names, STRENGTHS_AND_FORMS: forms, RXCUIS: cuis } = json[2];
+                //**If names are returned, set the dropdown options to the returned names */
+                if (names && forms)
+                    options.drugName = names.map((name, nameIndex) => {
+                        return {
+                            displayName: name,
+                            strengthsAndForms: forms[nameIndex].map((form, formIndex) => {
+                              return {
+                                strengthAndForm: form,
+                                rxcui: cuis[nameIndex][formIndex]
+                              };
+                            })
+                        };
+                    });
+
+                this.setState({ isLoading: false, options, selected: [] });
+            });
     }
 }
