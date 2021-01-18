@@ -1,21 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
+import { Switch, Route } from 'react-router-dom'
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-import RxTermsSearch from './components/RxTermsSearch';
+import SearchPage from './components/SearchPage';
+import DailyMedApi from './components/DailyMedApi';
 
 function App() {
   return (
-    <Container>
-      <Row>
-        <Col md={4}>
-          <RxTermsSearch />
-        </Col>
-      </Row>
-    </Container>
+    <Switch>
+      <Route exact path="/" component={SearchPage}/>
+      <Route path="/:rxcui" component={DailyMedApi}/>
+    </Switch>
   );
 }
 
